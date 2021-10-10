@@ -9,18 +9,26 @@ import java.util.ArrayList;
 
 public class GUI {
 
-    VideoStreamHandler vsHandler;
+    private final VideoStreamHandler vsHandler;
 
-    public static void main(String[] args) {
-        StartWindow sw = new StartWindow();
-        sw.run();
+    public GUI(){
+        vsHandler = new VideoStreamHandler();
     }
 
-    public void videoStreamWrapper(BufferedImage img){
-        if (vsHandler == null){
-            vsHandler = new VideoStreamHandler();
-            vsHandler.run();
-        }
+    public static void main(String[] args) {
+        VideoStreamHandler vsh = new VideoStreamHandler();
+        vsh.run();
+    }
+
+    public void criticalErrorMessage(String title, String message, String errorDescription){
+
+    }
+
+    public void runVideoStreamHandler(){
+        vsHandler.run();
+    }
+
+    public void addImgToVideoStreamHandler(BufferedImage img){
         vsHandler.pendingImages.add(img);
     }
 
