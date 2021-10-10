@@ -1,8 +1,12 @@
 package client;
 
+import client.modes.StreamScreen;
+import logic.Message;
 import logic.Network;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,39 +17,31 @@ public class Client {
     ClientLogic logic;
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Client client = new Client();
         log.setLevel(Level.ALL);
-        client.network = new ClientNetwork();
-        log.info("ClientNetwork started.");
+        try(Scanner sc = new Scanner(System.in)) {
+            String ip = sc.next();
+            client.network = new ClientNetwork(ip);
+        }
+        log.info("ClientNetwork initialized.");
         client.logic = new ClientLogic();
-        log.info("ClientLogic started.");
-
+        log.info("ClientLogic initialized.");
+        client.startSystems();
+        Thread.sleep(1000);
+        client.logic.modes.add(new StreamScreen(client.logic, client.network));
     }
 
-    private static class VideoStreamHandler implements Runnable{
-
-        boolean streaming = true;
-        ClientLogic logic;
-        ClientNetwork network;
-        String mode;
-
-        private VideoStreamHandler(ClientLogic cl){
-            this.logic = cl;
-        }
-
-        @Override
-        public void run() {
-            while (streaming){
-                BufferedImage img = logic.getScreenImage();
-                network.sendPictureToServer(img);
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+    public void receivedMessage(Message m){
+        // Simply forward message
+        logic.proceedMessage(m);
     }
+
+    private void startSystems(){
+        network.run();
+        log.info("Network started.");
+    }
+
+
 
 }

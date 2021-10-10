@@ -7,7 +7,22 @@ import logic.Network;
 
 import java.awt.image.BufferedImage;
 
-public class StreamScreen extends Mode{
+public class StreamScreen extends Mode implements Runnable{
+
+    public boolean running = true;
+
+    @Override
+    public void run(){
+        while (running){
+            System.out.println("sending image");
+            sendEventMessage();
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public StreamScreen(ClientLogic logic, ClientNetwork network){
         super.logic = logic;

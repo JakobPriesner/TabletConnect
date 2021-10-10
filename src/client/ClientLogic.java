@@ -1,21 +1,25 @@
 package client;
 
+import client.modes.Mode;
 import logic.Message;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class ClientLogic {
 
     Robot robot;
     Rectangle screen;
+    ArrayList<Mode> modes;
 
     public ClientLogic(){
         try {
             this.robot = new Robot();
             this.screen = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+            this.modes = new ArrayList<>();
         } catch (AWTException e) {
             e.printStackTrace(); //toDo: Exception-Handling
         }
@@ -26,12 +30,15 @@ public class ClientLogic {
     }
 
     public void proceedMessage(Message m){
-        if (m.getMessageType().equals("initType")){
-            //toDo: Handle different Types
-        }
+
     }
 
-    public static class MyMouseListener implements MouseListener{
+    public void addMode(Mode m){
+        modes.add(m);
+        m.run();
+    }
+
+    private static class MyMouseListener implements MouseListener{
 
         @Override
         public void mouseClicked(MouseEvent e) {

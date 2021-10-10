@@ -3,7 +3,7 @@ package client.modes;
 import client.ClientLogic;
 import client.ClientNetwork;
 
-public abstract class Mode {
+public abstract class Mode implements Runnable{
 
     ClientNetwork network;
     ClientLogic logic;
