@@ -42,7 +42,6 @@ public class Message implements Serializable {
             {
                 return new Message("faultyMessage", null);
             }
-
         }
     }
 

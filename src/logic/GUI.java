@@ -25,7 +25,8 @@ public class GUI {
     }
 
     public void runVideoStreamHandler(){
-        vsHandler.run();
+        Thread th = new Thread(vsHandler);
+        th.start();
     }
 
     public void addImgToVideoStreamHandler(BufferedImage img){
@@ -66,12 +67,14 @@ public class GUI {
         public void run() {
             createWindow();
             streamWindow.setVisible(true);
-            if (!pendingImages.isEmpty()){
-                pendingImages.forEach(this::updateImage);
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    // don't care
+            while (true){
+                if (!pendingImages.isEmpty()){
+                    updateImage(pendingImages.remove(0));
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        // don't care
+                    }
                 }
             }
         }
@@ -80,6 +83,7 @@ public class GUI {
             streamWindow = new JFrame("TabletConnect - View");
             streamWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             jLabel = new JLabel();
+            streamWindow.getContentPane().add(jLabel);
             String filename = "src/img/waiting_for_picture.jpeg";
             try{
                 BufferedImage image = ImageIO.read(new File(filename));
@@ -95,6 +99,9 @@ public class GUI {
 
         private void updateImage(BufferedImage img){
             jLabel.setIcon(new ImageIcon(img));
+            jLabel.repaint();
+            jLabel.revalidate();
+            System.out.println("Label repainted");
         }
     }
 

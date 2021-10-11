@@ -32,11 +32,16 @@ public class ServerNetwork extends Network implements Runnable{
         running = true;
         while (running) {
             try {
+                log.info("Try to connect on " + PORT);
                 ServerSocket ss = new ServerSocket(Network.PORT);
                 Socket conn = ss.accept();
                 log.info("Connected to Client on " + conn.getInetAddress());
-                startNetworkHandler(conn);
-            } catch (IOException e) {
+                Thread[] threads = startNetworkHandler(conn);
+                for (Thread th : threads){
+                    th.join();
+                }
+
+            } catch (IOException | InterruptedException e) {
                 //toDo: handle Exceptions
                 e.printStackTrace();
             }

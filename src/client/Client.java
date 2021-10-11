@@ -21,7 +21,7 @@ public class Client implements Core {
     public static void main(String[] args) throws InterruptedException {
         Client client = new Client();
         log.setLevel(Level.ALL);
-        client.network = new ClientNetwork("127.0.0.1", client);
+        client.network = new ClientNetwork("192.168.178.23", client);
         log.info("ClientNetwork initialized.");
         client.logic = new ClientLogic(client.network);
         log.info("ClientLogic initialized.");

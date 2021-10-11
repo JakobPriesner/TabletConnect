@@ -36,32 +36,31 @@ public class ServerLogic implements Logic {
     public void processMessage(Message m){
         if (m.getMessageType().equals("invalidMessage")){
             log.warning("Received an invalid Message!");
-        } else if (m.getMessageType().equals("initType")){
-            if (! (m.getInformation() instanceof String)){
+        } else if (m.getMessageType().equals("initType")) {
+            if (!(m.getInformation() instanceof String)) {
                 log.warning("Incorrect message received!");
                 gui.criticalErrorMessage(
                         "fataler Fehler!",
                         "Es ist ein fataler Fehler in dem Program aufgetreten. Bitte starte es auf dem Server und Client neu.",
                         "Message type and message information do not match!"
                 );
-            } else if (m.getInformation().equals("streamWindow")){
+            } else if (m.getInformation().equals("streamWindow")) {
                 gui.runVideoStreamHandler();
-            } else if (m.getInformation().equals("streamWindowAndMouseActions")){
+            } else if (m.getInformation().equals("streamWindowAndMouseActions")) {
                 gui.runVideoStreamHandler();
-
             }
-            if (m.getMessageType().equals("updateFrame")){
-                if (! (m.getInformation() instanceof BufferedImage)){
-                    log.warning("Incorrect message received!");
-                    gui.criticalErrorMessage(
-                            "fataler Fehler!",
-                            "Es ist ein fataler Fehler in dem Program aufgetreten. Bitte starte es auf dem Server und Client neu.",
-                            "Message type and message information do not match!"
-                    );
-                }
-                gui.addImgToVideoStreamHandler((BufferedImage) m.getInformation());
+        }
+        else if (m.getMessageType().equals("updateFrame")){
+            if (! (m.getInformation() instanceof BufferedImage)){
+                log.warning("Incorrect message received!");
+                gui.criticalErrorMessage(
+                        "fataler Fehler!",
+                        "Es ist ein fataler Fehler in dem Program aufgetreten. Bitte starte es auf dem Server und Client neu.",
+                        "Message type and message information do not match!"
+                );
             }
-
+            log.info("Start Update Cyklus!");
+            gui.addImgToVideoStreamHandler((BufferedImage) m.getInformation());
         } else if (m.getMessageType().equals("updateMouseEvent")){
             if (! (m.getInformation() instanceof MouseEvent)){
                 log.warning("Incorrect message received!");

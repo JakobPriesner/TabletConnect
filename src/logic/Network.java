@@ -14,7 +14,7 @@ public abstract class Network {
     private ReceiveMessagesHandler receiveMessagesHandler;
     private PendingMessagesHandler pendingMessagesHandler;
     private Socket connection;
-    public static final int PORT = 55555;
+    public static final int PORT = 49999;
 
     public Network(Core core){
         this.core = core;
@@ -22,7 +22,7 @@ public abstract class Network {
         log.setLevel(Level.ALL);
     }
 
-    public void startNetworkHandler(Socket connection){
+    public Thread[] startNetworkHandler(Socket connection){
         this.connection = connection;
         receiveMessagesHandler = new ReceiveMessagesHandler(this.core, this.connection);
         pendingMessagesHandler = new PendingMessagesHandler(this.connection, this);
@@ -30,6 +30,7 @@ public abstract class Network {
         Thread pendingMessagesHandlerThread = new Thread(pendingMessagesHandler);
         receiveMessagesHandlerThread.start();
         pendingMessagesHandlerThread.start();
+        return new Thread[]{receiveMessagesHandlerThread, pendingMessagesHandlerThread};
     }
 
     public void stopNetworkHandler(){

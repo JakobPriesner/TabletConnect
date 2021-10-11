@@ -30,10 +30,10 @@ public class ClientNetwork extends Network implements Runnable{
     @Override
     public void run(){
         try {
-            Socket conn = new Socket(ip, PORT);
-            connection = conn;
+            log.info("Try to connect on " + ip + ":" + PORT);
+            connection = new Socket(ip, PORT);
             log.info("Connected to Server on " + ip);
-            startNetworkHandler(conn);
+            startNetworkHandler(connection);
         } catch (IOException e) {
             e.printStackTrace();
         }
