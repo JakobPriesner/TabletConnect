@@ -2,24 +2,31 @@ package client;
 
 import client.modes.Mode;
 import logic.Message;
+import logic.Network;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ClientLogic {
 
     Robot robot;
     Rectangle screen;
     ArrayList<Mode> modes;
+    ClientNetwork network;
+    private static final Logger log = Logger.getLogger(Network.class.getName());
 
-    public ClientLogic(){
+    public ClientLogic(ClientNetwork network){
+        log.setLevel(Level.ALL);
         try {
             this.robot = new Robot();
             this.screen = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
             this.modes = new ArrayList<>();
+            this.network = network;
         } catch (AWTException e) {
             e.printStackTrace(); //toDo: Exception-Handling
         }
@@ -29,13 +36,27 @@ public class ClientLogic {
         return robot.createScreenCapture(screen);
     }
 
-    public void proceedMessage(Message m){
+    public void sendPictureToServer(BufferedImage img){
+        //toDo: ConvId
+        Message msg = new Message.MessageBuilder()
+                .withConvID(1)
+                .withMessageType("updateFrame")
+                .withInformation(img)
+                .build();
+        network.addMessage(msg);
 
+    }
+
+    public void proceedMessage(Message m){
+        if (m.getMessageType().equals("statusUpdate")){
+            return;
+        }
     }
 
     public void addMode(Mode m){
         modes.add(m);
         m.run();
+        log.info("Mode " + m.getClass().getName() + " added");
     }
 
     private static class MyMouseListener implements MouseListener{

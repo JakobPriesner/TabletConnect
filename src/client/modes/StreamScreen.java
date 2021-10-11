@@ -14,7 +14,6 @@ public class StreamScreen extends Mode implements Runnable{
     @Override
     public void run(){
         while (running){
-            System.out.println("sending image");
             sendEventMessage();
             try {
                 Thread.sleep(10);
@@ -26,13 +25,12 @@ public class StreamScreen extends Mode implements Runnable{
 
     public StreamScreen(ClientLogic logic, ClientNetwork network){
         super.logic = logic;
-        super.network = network;
     }
 
     @Override
     public void sendEventMessage(){
         BufferedImage img = logic.getScreenImage();
-        network.sendPictureToServer(img);
+        logic.sendPictureToServer(img);
     }
 
 }

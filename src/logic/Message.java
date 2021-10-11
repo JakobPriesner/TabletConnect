@@ -1,14 +1,15 @@
 package logic;
 
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
-public class Message {
+public class Message implements Serializable {
     // attributes are final, so they cannot be manipulated during the process
     private final int convID;
     private final String messageType;
     private final Object information;
 
-    private Message(int convID, String messageType, Object information){
+    public Message(int convID, String messageType, Object information){
         this.convID = convID;
         this.messageType = messageType;
         this.information = information;

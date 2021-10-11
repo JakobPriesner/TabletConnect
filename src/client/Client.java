@@ -20,16 +20,18 @@ public class Client {
     public static void main(String[] args) throws InterruptedException {
         Client client = new Client();
         log.setLevel(Level.ALL);
-        try(Scanner sc = new Scanner(System.in)) {
-            String ip = sc.next();
-            client.network = new ClientNetwork(ip);
-        }
+        client.network = new ClientNetwork("127.0.0.1");
         log.info("ClientNetwork initialized.");
-        client.logic = new ClientLogic();
+        client.logic = new ClientLogic(client.network);
         log.info("ClientLogic initialized.");
+
         client.startSystems();
-        Thread.sleep(1000);
-        client.logic.modes.add(new StreamScreen(client.logic, client.network));
+        client.test();
+        //client.logic.addMode(new StreamScreen(client.logic, client.network));
+    }
+
+    public void test(){
+        network.addMessage(new Message(1, "hello", "World"));
     }
 
     public void receivedMessage(Message m){
@@ -38,10 +40,9 @@ public class Client {
     }
 
     private void startSystems(){
-        network.run();
+        Thread th = new Thread(network, "network");
+        th.start();
         log.info("Network started.");
     }
-
-
 
 }

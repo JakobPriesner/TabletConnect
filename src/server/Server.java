@@ -6,6 +6,8 @@ import logic.Network;
 
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,6 +16,8 @@ public class Server {
     ServerNetwork network;
     ServerLogic logic;
     GUI gui;
+    boolean running = true;
+    ArrayList<Message> pendingMessages = new ArrayList<>();
     private static final Logger log = Logger.getLogger(Network.class.getName());
 
     public static void main(String[] args) {

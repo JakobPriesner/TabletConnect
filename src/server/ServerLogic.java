@@ -26,13 +26,19 @@ public class ServerLogic{
             this.screen = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
             this.mvHandler = new MouseEventHandler();
             log.info("MouseEventHandler initialized.");
+            gui.runVideoStreamHandler();
         } catch (AWTException e) {
             e.printStackTrace(); //toDo: Exception-Handling
         }
     }
 
     public void processMessage(Message m){
-        if (m.getMessageType().equals("initType")){
+        if (m.getMessageType().equals("invalidMessage")){
+            return;
+        } else if (m.getMessageType().equals("statusUpdate")){
+            return;
+        }
+        else if (m.getMessageType().equals("initType")){
             if (! (m.getInformation() instanceof String)){
                 log.warning("Incorrect message received!");
                 gui.criticalErrorMessage(
