@@ -1,6 +1,7 @@
 package client;
 
 import client.modes.Mode;
+import logic.Logic;
 import logic.Message;
 import logic.Network;
 
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ClientLogic {
+public class ClientLogic implements Logic {
 
     Robot robot;
     Rectangle screen;
@@ -39,11 +40,10 @@ public class ClientLogic {
     public void sendPictureToServer(BufferedImage img){
         //toDo: ConvId
         Message msg = new Message.MessageBuilder()
-                .withConvID(1)
                 .withMessageType("updateFrame")
                 .withInformation(img)
                 .build();
-        network.addMessage(msg);
+        network.queuePendingMessage(msg);
 
     }
 
@@ -54,8 +54,10 @@ public class ClientLogic {
     }
 
     public void addMode(Mode m){
+        System.out.println("addMode....");
         modes.add(m);
-        m.run();
+        Thread th = new Thread(m);
+        th.start();
         log.info("Mode " + m.getClass().getName() + " added");
     }
 

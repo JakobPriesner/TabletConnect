@@ -5,6 +5,8 @@ import client.ClientLogic;
 import client.ClientNetwork;
 import logic.Network;
 
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class StreamScreen extends Mode implements Runnable{

@@ -1,6 +1,7 @@
 package server;
 
 import logic.GUI;
+import logic.Logic;
 import logic.Message;
 import logic.Network;
 
@@ -10,7 +11,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-public class ServerLogic{
+public class ServerLogic implements Logic {
 
     private Robot robot;
     private GUI gui;
@@ -34,11 +35,8 @@ public class ServerLogic{
 
     public void processMessage(Message m){
         if (m.getMessageType().equals("invalidMessage")){
-            return;
-        } else if (m.getMessageType().equals("statusUpdate")){
-            return;
-        }
-        else if (m.getMessageType().equals("initType")){
+            log.warning("Received an invalid Message!");
+        } else if (m.getMessageType().equals("initType")){
             if (! (m.getInformation() instanceof String)){
                 log.warning("Incorrect message received!");
                 gui.criticalErrorMessage(

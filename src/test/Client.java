@@ -1,12 +1,22 @@
 package test;
 
+import logic.Core;
 import logic.Message;
+import logic.Network;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Client {
+public class Client extends Network {
+    public Client(Core core) {
+        super(core);
+    }
+/*
+    public Client(){
+        super();
+    }
 
     public static void main(String[] args) {
         Client c = new Client();
@@ -14,38 +24,17 @@ public class Client {
     }
 
     public void run(){
-        while (true){
-            try(Socket conn = new Socket("127.0.0.1", 50000);
-                Scanner sc = new Scanner(System.in)){
+        try(Socket conn = new Socket("127.0.0.1", 50000);
+            Scanner sc = new Scanner(System.in)){
+            while (true) {
                 Message msg = receiveMessage(conn);
                 System.out.println(msg.getMessageType());
                 String input = sc.next();
-                sendMessage(conn, new Message(1, input, "null"));
-
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-                break;
+                queuePendingMessage(new Message(input, ""));
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
     }
-
-    private void sendMessage(Socket conn, Message msg) throws IOException {
-        try(OutputStream os = conn.getOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(os)){
-            oos.writeObject(msg);
-            oos.flush();
-        }
-
-    }
-
-    private Message receiveMessage(Socket conn) throws IOException, ClassNotFoundException {
-        InputStream is = conn.getInputStream();
-        Message msg;
-        ObjectInputStream ois = new ObjectInputStream(is);
-        msg = (Message) ois.readObject();
-        System.out.println("recieved Message");
-        return msg;
-    }
-
+*/
 }
